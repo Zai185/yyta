@@ -19,4 +19,14 @@ class Module extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    public function schedules()
+    {
+        return $this->hasMany(Schedule::class);
+    }
+
+    public function students()
+    {
+        return $this->hasManyThrough(Student::class, Transaction::class, 'course_id', 'id', 'course_id', 'student_id');
+    }
 }

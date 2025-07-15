@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\Student;
 use App\Models\Module;
 use App\Models\BatchLecturer;
+use Carbon\Carbon;
 use Filament\Widgets\BarChartWidget;
 use Filament\Widgets\Concerns\InteractsWithPageFilters;
 
@@ -16,6 +17,9 @@ class CoursePopularity extends BarChartWidget
 
     protected function getData(): array
     {
+        $start = $this->filters['dateFrom'] ?? now()->startOfYear()->toDateString();
+        $end = $this->filters['dateTo'] ?? now()->endOfYear()->toDateString();
+
         $courses = Course::all();
         $labels = [];
         $data = [];
@@ -23,14 +27,13 @@ class CoursePopularity extends BarChartWidget
         foreach ($courses as $course) {
             $moduleIds = Module::where('course_id', $course->id)->pluck('id');
 
-            // Use BatchLecturer model to get batch_ids linked to those modules
             $batchIds = BatchLecturer::whereIn('module_id', $moduleIds)
                 ->pluck('batch_id')
                 ->unique();
-                
 
-            // Count students in these batches
-            $studentCount = Student::whereIn('batch_id', $batchIds)->count();
+            $studentCount = Student::whereIn('batch_id', $batchIds)
+                ->whereBetween('created_at', [$start, $end])
+                ->count();
 
             $labels[] = $course->name;
             $data[] = $studentCount;
@@ -45,6 +48,13 @@ class CoursePopularity extends BarChartWidget
                 ],
             ],
             'labels' => $labels,
+        ];
+    }
+
+    protected function getOptions(): array
+    {
+        return [
+            'indexAxis' => 'y', // makes the bar chart horizontal
         ];
     }
 }

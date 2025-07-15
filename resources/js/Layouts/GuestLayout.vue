@@ -7,7 +7,7 @@
                 <!-- Logo -->
                 <div class="flex items-center space-x-2">
                     <img src="/assets/logo.png" alt="Logo" class="w-8 h-8" />
-                    <span class="text-xl font-bold text-gray-800">MAUC University</span>
+                    <span class="text-xl font-bold text-gray-800">YMax University</span>
                 </div>
 
                 <!-- Navigation Links (add if needed) -->
@@ -51,7 +51,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12 border-b border-gray-700 pb-12">
                 <!-- Logo and Description -->
                 <div>
-                    <h2 class="text-2xl font-bold mb-4">EduVerse</h2>
+                    <h2 class="text-2xl font-bold mb-4">YMax University</h2>
                     <p class="text-gray-400">
                         Empowering students through flexible learning options and world-class programs. Join
                         thousands on their journey to success.
@@ -86,7 +86,7 @@
             </div>
 
             <div class="mt-8 text-center text-gray-500 text-sm">
-                &copy; {{ new Date().getFullYear() }} EduVerse. All rights reserved.
+                &copy; {{ new Date().getFullYear() }} YMax University. All rights reserved.
             </div>
         </div>
     </footer>

@@ -3,21 +3,23 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BatchResource\Pages;
-use App\Filament\Resources\BatchResource\RelationManagers;
 use App\Models\Batch;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class BatchResource extends Resource
 {
     protected static ?string $model = Batch::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = 'Scheduling & Grouping';
+
+    protected static ?int $navigationSort = 0;
+
+    protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
 
     public static function form(Form $form): Form
     {
@@ -26,6 +28,12 @@ class BatchResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->label('Batch Name'),
+                Select::make('students')
+                    ->multiple()
+                    ->relationship('students', 'name')
+                    ->preload()
+                    ->searchable()
+                    ->label('Assigned Students'),
             ]);
     }
 

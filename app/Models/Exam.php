@@ -14,6 +14,7 @@ class Exam extends Model
         'start_at',
         'end_at',
         'batch_id',
+        'module_id'
     ];
 
     // Relationships
@@ -26,5 +27,29 @@ class Exam extends Model
     public function examResults()
     {
         return $this->hasMany(ExamResult::class);
+    }
+    public function module()
+    {
+        return $this->belongsTo(Module::class);
+    }
+
+    public function results()
+    {
+        return $this->hasMany(ExamResult::class);
+    }
+
+    protected static function booted()
+    {
+        static::created(function ($exam) {
+            $students = $exam->batch->students ?? [];
+            foreach ($students as $student) {
+                ExamResult::firstOrCreate([
+                    'exam_id' => $exam->id,
+                    'student_id' => $student->id,
+                ], [
+                    'score' => 0,
+                ]);
+            }
+        });
     }
 }

@@ -6,23 +6,25 @@ use App\Models\Department;
 use App\Models\Staff;
 use App\Models\Transaction;
 use App\Models\Student;
+use Carbon\Carbon;
 use Filament\Widgets\BarChartWidget;
+use Filament\Widgets\Concerns\InteractsWithPageFilters;
 
 class DepartmentWiseFeeCollection extends BarChartWidget
 {
+    use InteractsWithPageFilters;
     protected static ?string $heading = 'Department-wise Fee Collection';
 
     protected function getData(): array
     {
-        $departments = Department::all();
+        $start = $this->filters['from'] ?? Carbon::now()->startOfYear();
+        $end = $this->filters['to'] ?? Carbon::now()->endOfYear();
 
+        $departments = Department::all();
         $labels = [];
         $data = [];
 
         foreach ($departments as $department) {
-            // Get staff or lecturers by department (you can adjust logic as needed)
-            // Here we get students via batches linked to this department through lecturers or staff if applicable.
-
             $studentsInDept = Student::whereIn('batch_id', function ($query) use ($department) {
                 $query->select('batch_id')
                     ->from('batch_lecturers')
@@ -31,7 +33,9 @@ class DepartmentWiseFeeCollection extends BarChartWidget
                     });
             })->pluck('id');
 
-            $amount = Transaction::whereIn('student_id', $studentsInDept)->sum('amount');
+            $amount = Transaction::whereIn('student_id', $studentsInDept)
+                ->whereBetween('created_at', [$start, $end])
+                ->sum('amount');
 
             $labels[] = $department->name;
             $data[] = $amount;

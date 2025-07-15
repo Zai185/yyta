@@ -13,6 +13,6 @@ class Batch extends Model
 
     public function students()
     {
-        return $this->hasMany(Student::class, 'batch_id');
+        return $this->belongsToMany(Student::class);
     }
 }

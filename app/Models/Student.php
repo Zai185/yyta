@@ -18,14 +18,19 @@ class Student extends Model
         'batch_id'
     ];
 
-    public function batch()
+    public function batches()
     {
-        return $this->belongsTo(Batch::class);
+        return $this->belongsToMany(Batch::class);
     }
 
-    public function examResults()
-{
-    return $this->hasMany(ExamResult::class);
-}
 
+    public function examResults()
+    {
+        return $this->hasMany(ExamResult::class);
+    }
+
+    public function attendedSchedule($schedule)
+    {
+        return $this->attendances()->where('schedule_id', $schedule->id)->exists();
+    }
 }

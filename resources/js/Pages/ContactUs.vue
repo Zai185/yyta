@@ -103,7 +103,7 @@
                                     </div>
                                     <div>
                                         <h4 class="font-medium text-gray-900">Email</h4>
-                                        <p class="text-gray-600">admissions@eduverse.edu</p>
+                                        <p class="text-gray-600">admissions@YMax University.edu</p>
                                     </div>
                                 </div>
                             </div>

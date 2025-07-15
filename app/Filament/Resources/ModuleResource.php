@@ -17,6 +17,10 @@ class ModuleResource extends Resource
 {
     protected static ?string $model = Module::class;
 
+    protected static ?string $navigationGroup = 'Academic Structure';
+
+    protected static ?int $navigationSort = 2;
+    
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

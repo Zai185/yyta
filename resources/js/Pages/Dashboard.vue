@@ -8,7 +8,7 @@
                         <div>
                             <h1 class="text-4xl md:text-6xl font-bold mb-6">
                                 Shape Your Future with
-                                <span>EduVerse</span>
+                                <span>YMax University</span>
                             </h1>
                             <p class="text-xl mb-8">
                                 Join thousands of students who have transformed their careers through our innovative
@@ -56,7 +56,7 @@
             <section class="py-20 bg-white">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-12">
-                        <h2 class="text-3xl font-bold text-gray-900 mb-4">Why Choose EduVerse?</h2>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4">Why Choose YMax University?</h2>
                         <p class="text-lg text-gray-600">Experience education that adapts to your lifestyle and career
                             goals</p>
                     </div>
@@ -97,7 +97,7 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <h2 class="text-3xl font-bold mb-4">Ready to Start Your Journey?</h2>
                     <p class="text-xl mb-8 text-red-100">Join thousands of successful graduates who transformed their
-                        careers with EduVerse</p>
+                        careers with YMax University</p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
                         <button @click="$emit('navigate', 'courses')"
                             class="bg-white text-red-800 px-8 py-3 rounded-lg font-semibold hover:bg-red-50 transition-colors">

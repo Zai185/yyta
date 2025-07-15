@@ -4,17 +4,23 @@ namespace App\Filament\Widgets;
 
 use App\Models\ExamResult;
 use Filament\Widgets\BarChartWidget;
+use Filament\Widgets\Concerns\InteractsWithPageFilters;
 
 class GradeDistribution extends BarChartWidget
 {
+    use InteractsWithPageFilters;
+
     protected static ?string $heading = 'Grade Distribution';
 
     protected function getData(): array
     {
+        $start = $this->filters['dateFrom'] ?? now()->startOfYear()->toDateString();
+        $end = $this->filters['dateTo'] ?? now()->endOfYear()->toDateString();
+
         // Group scores into ranges 0-10, 11-20, ..., 91-100
         $buckets = array_fill(0, 10, 0);
 
-        $results = ExamResult::all();
+        $results = ExamResult::whereBetween('created_at', [$start, $end])->get();
 
         foreach ($results as $result) {
             $bucket = min(floor($result->score / 10), 9);

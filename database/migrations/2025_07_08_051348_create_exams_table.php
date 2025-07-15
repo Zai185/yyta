@@ -13,8 +13,8 @@ class CreateExamsTable extends Migration
             $table->id();
 
             $table->date('start_date'); // date of exam
-            $table->timestamp('start_at'); // start datetime
-            $table->timestamp('end_at');   // end datetime
+            $table->time('start_at'); // start datetime
+            $table->time('end_at');   // end datetime
             
             $table->foreignIdFor(Batch::class)->constrained()->cascadeOnDelete();
 

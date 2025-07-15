@@ -6,6 +6,7 @@ use App\Models\Transaction;
 use Filament\Widgets\LineChartWidget;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Filament\Widgets\Concerns\InteractsWithPageFilters;
 
 class TotalIncomeTrend extends LineChartWidget
 {
@@ -13,6 +14,7 @@ class TotalIncomeTrend extends LineChartWidget
 
     protected function getData(): array
     {
+        
         $startOfYear = Carbon::now()->startOfYear();
         $endOfYear = Carbon::now()->endOfYear();
 
