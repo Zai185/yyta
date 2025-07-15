@@ -195,11 +195,12 @@
 
 <script setup>
 import GuestLayout from '@/Layouts/GuestLayout.vue'
+import { useForm } from '@inertiajs/vue3'
 import { ref } from 'vue'
 
 const submitting = ref(false)
 
-const contactForm = ref({
+const contactForm = useForm({
     name: '',
     email: '',
     phone: '',
@@ -207,22 +208,14 @@ const contactForm = ref({
     message: ''
 })
 
-const submitContactForm = async () => {
+const submitContactForm = () => {
     submitting.value = true
-
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500))
-
-    alert('Thank you for your message! We will get back to you within 24 hours.')
-    submitting.value = false
-
-    // Reset form
-    contactForm.value = {
-        name: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: ''
-    }
+    contactForm.post('/contact', {
+        onSuccess: () => {
+            alert('Message sent!')
+            form.reset()
+        },
+        onFinish: () => submitting.value = false
+    })
 }
 </script>

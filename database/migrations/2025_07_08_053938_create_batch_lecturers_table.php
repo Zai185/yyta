@@ -17,6 +17,7 @@ class CreateBatchLecturersTable extends Migration
             // Composite primary key
             
             // Foreign keys
+            
             $table->foreignIdFor(Batch::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Lecturer::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Module::class)->constrained()->cascadeOnDelete();

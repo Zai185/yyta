@@ -75,13 +75,13 @@
                     <h3 class="text-lg font-semibold mb-4">Stay Connected</h3>
                     <p class="text-gray-400 mb-4">Subscribe to our newsletter for updates and course announcements.
                     </p>
-                    <div class="flex items-center space-x-2">
-                        <input type="email" placeholder="Enter your email"
+                    <form @submit.prevent="subscribeNewspaper" class="flex items-center space-x-2">
+                        <input v-model="form.email" type="email" placeholder="Enter your email"
                             class="w-full px-4 py-2 rounded-lg text-gray-900 focus:outline-none" />
-                        <button class="bg-red-700 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold">
+                        <button :disabled="form.processing" class="bg-red-700 hover:bg-red-600 text-white px-4 py-2 rounded-lg font-semibold">
                             Subscribe
                         </button>
-                    </div>
+                    </form>
                 </div>
             </div>
 
@@ -94,7 +94,7 @@
 
 <script setup lang="ts">
 import { courses } from '@/Pages/course-data';
-import { Head, Link } from '@inertiajs/vue3';
+import { Head, Link, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue'
 
 const isMobileMenuOpen = ref(false)
@@ -121,4 +121,17 @@ const navs = [
         label: 'Contact Us',
     },
 ]
+
+const form = useForm({
+    email: ''
+})
+
+const subscribeNewspaper = () => {
+    form.post('/subscribe', {
+        onSuccess: () => {
+            alert('Subscribed!')
+            form.reset()
+        }
+    })
+}
 </script>

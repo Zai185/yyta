@@ -30,6 +30,11 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->passwordReset()
+            ->profile()
+            // ->brandName("Y Max University")
+            ->brandLogo(fn()=>view('filament.admin.logo'))
+            ->brandLogoHeight('32px')
             ->colors([
                 'primary' => '#8B0E0E',
             ])

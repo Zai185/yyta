@@ -84,10 +84,12 @@
                         </template>
                     </div>
                     <div class="text-center mt-12">
-                        <button @click="$emit('navigate', 'courses')"
+                        <Link :href="route('courses')">
+                        <button
                             class="bg-red-800 text-white px-8 py-3 rounded-lg font-semibold hover:bg-red-900 transition-colors">
                             View All Courses
                         </button>
+                        </Link>
                     </div>
                 </div>
             </section>
@@ -99,14 +101,18 @@
                     <p class="text-xl mb-8 text-red-100">Join thousands of successful graduates who transformed their
                         careers with YMax University</p>
                     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                        <button @click="$emit('navigate', 'courses')"
+                        <Link :href="route('courses')">
+                        <button
                             class="bg-white text-red-800 px-8 py-3 rounded-lg font-semibold hover:bg-red-50 transition-colors">
                             Browse Courses
                         </button>
+                        </Link>
+                        <Link :href="route('contact-us')">
                         <button @click="$emit('navigate', 'contact')"
                             class="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-red-800 transition-colors">
                             Contact Admissions
                         </button>
+                        </Link>
                     </div>
                 </div>
             </section>
@@ -123,6 +129,7 @@ import CourseCard from '@/Components/Courses/CourseCard.vue';
 import FeatureCard from '@/Components/Landing/FeatureCard.vue';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Course } from '@/types';
+import { Link } from '@inertiajs/vue3';
 </script>
 
 <style scoped>

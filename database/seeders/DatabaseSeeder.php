@@ -110,7 +110,7 @@ class DatabaseSeeder extends Seeder
                 $batchModuleLecturers = $lecturers->random($faker->numberBetween(1, 2));
                 $batchModuleStudents = $students->random($faker->numberBetween(1, 2));
                 foreach ($batchModuleLecturers as $lecturer) {
-                    BatchLecturer::create([
+                    DB::table('batch_lecturers')->insert([
                         'batch_id' => $batch->id,
                         'lecturer_id' => $lecturer->id,
                         'module_id' => $module->id,
