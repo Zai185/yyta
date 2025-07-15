@@ -1,5 +1,7 @@
 <?php
 
+use App\Filament\Pages\ChatConversation;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
 use App\Mail\ContactThankYouMail;
@@ -52,7 +54,6 @@ Route::post('/subscribe', function (Request $request) {
         $message->to($email)
             ->subject('Subscription Confirmation - Y Max University');
     });
-
 });
 
 Route::middleware('auth')->group(function () {
@@ -61,4 +62,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::post('/chat/send', [ChatController::class, 'send']);
+Route::get('/chat/history', [ChatController::class, 'history']);
+
+Route::get('/admin/chat-conversation/{messageId}', ChatConversation::class)
+    ->name('filament.pages.chat-conversation')
+    ->middleware([
+        'web',
+        'auth', // or 'filament.auth' if using a custom guard
+        config('filament.middleware.base'),
+    ]);
+    
 require __DIR__ . '/auth.php';

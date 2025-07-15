@@ -90,10 +90,13 @@
             </div>
         </div>
     </footer>
+
+    <FloatingButton />
 </template>
 
 <script setup lang="ts">
 import { courses } from '@/Pages/course-data';
+import FloatingButton from '@/Pages/FloatingButton.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue'
 
