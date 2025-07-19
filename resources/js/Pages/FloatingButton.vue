@@ -8,7 +8,7 @@
             <div class="chat-header">Chat</div>
             <div class="chat-messages" ref="chatContainer">
                 <div v-for="(msg, index) in messages" :key="index">
-                    <strong>{{ msg.sender || 'Guest' }}:</strong> {{ msg.message }}
+                    <strong>{{ msg.session_id == 'admin' ? 'Admin' : 'Guest' }}:</strong> {{ msg.message }}
                 </div>
             </div>
             <input v-model="input" @keyup.enter="sendMessage" class="chat-input" placeholder="Type a message..." />

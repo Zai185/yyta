@@ -63,17 +63,18 @@ class RegistrationDropoutTrend extends LineChartWidget
         }
 
         // 4. DB Queries
-        $registrations = Student::selectRaw("DATE_FORMAT(created_at, '{$sqlFormat}') as grp, COUNT(*) as total")
+        $registrations = Student::selectRaw("TO_CHAR(created_at, '{$sqlFormat}') as grp, COUNT(*) as total")
             ->whereBetween('created_at', [$start, $end])
             ->where('status', 'active')
             ->groupBy('grp')
             ->pluck('total', 'grp');
 
-        $dropouts = Student::selectRaw("DATE_FORMAT(updated_at, '{$sqlFormat}') as grp, COUNT(*) as total")
+        $dropouts = Student::selectRaw("TO_CHAR(updated_at, '{$sqlFormat}') as grp, COUNT(*) as total")
             ->whereBetween('updated_at', [$start, $end])
             ->where('status', 'dropped')
             ->groupBy('grp')
             ->pluck('total', 'grp');
+
 
         // 5. Match to labels
         $registrationData = collect($keys)->map(fn($key) => $registrations->get($key, 0))->toArray();

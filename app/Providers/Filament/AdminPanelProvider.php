@@ -18,8 +18,10 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Jeffgreco13\FilamentBreezy\BreezyCore;
 use Leandrocfe\FilamentApexCharts\FilamentApexChartsPlugin;
 use Saade\FilamentFullCalendar\FilamentFullCalendarPlugin;
+use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticationPlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -33,7 +35,7 @@ class AdminPanelProvider extends PanelProvider
             ->passwordReset()
             ->profile()
             // ->brandName("Y Max University")
-            ->brandLogo(fn()=>view('filament.admin.logo'))
+            ->brandLogo(fn() => view('filament.admin.logo'))
             ->brandLogoHeight('32px')
             ->colors([
                 'primary' => '#8B0E0E',
@@ -66,6 +68,13 @@ class AdminPanelProvider extends PanelProvider
                     ->editable(true)
                     ->timezone(config('app.timezone'))
                     ->locale(config('app.locale')),
+                TwoFactorAuthenticationPlugin::make()
+                    ->enableTwoFactorAuthentication()   // TOTP (Google Auth)
+                    ->enablePasskeyAuthentication()     // Passkeys (WebAuthn)
+                    ->addTwoFactorMenuItem()            // Adds “2FA” to user menu
+                    ->forceTwoFactorSetup(),
+                // BreezyCore::make()
+                //     ->myProfile()
             ])
             ->authMiddleware([
                 Authenticate::class,

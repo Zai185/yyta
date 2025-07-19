@@ -31,14 +31,16 @@ class PassFailRates extends BarChartWidget
         $groupBy = $totalMonths > 12 ? 'YEAR' : 'MONTH';
 
         // Base query scoped by exam's date range
+        $groupByFormat = 'YYYY-MM'; // or 'YYYY', 'YYYY-MM-DD', etc.
+
         $results = ExamResult::selectRaw("
-                {$groupBy}(exams.start_date) as period,
-                SUM(CASE WHEN exam_results.score >= ? THEN 1 ELSE 0 END) as pass_count,
-                SUM(CASE WHEN exam_results.score < ? THEN 1 ELSE 0 END) as fail_count
-            ", [$passingScore, $passingScore])
+    TO_CHAR(exams.start_date, '{$groupByFormat}') as period,
+    SUM(CASE WHEN exam_results.score >= ? THEN 1 ELSE 0 END) as pass_count,
+    SUM(CASE WHEN exam_results.score < ? THEN 1 ELSE 0 END) as fail_count
+", [$passingScore, $passingScore])
             ->join('exams', 'exams.id', '=', 'exam_results.exam_id')
             ->whereBetween('exams.start_date', [$start, $end])
-            ->groupBy(DB::raw("{$groupBy}(exams.start_date)"))
+            ->groupBy(DB::raw("TO_CHAR(exams.start_date, '{$groupByFormat}')"))
             ->orderBy('period')
             ->get();
 

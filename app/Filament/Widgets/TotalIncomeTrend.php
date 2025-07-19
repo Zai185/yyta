@@ -14,14 +14,14 @@ class TotalIncomeTrend extends LineChartWidget
 
     protected function getData(): array
     {
-        
+
         $startOfYear = Carbon::now()->startOfYear();
         $endOfYear = Carbon::now()->endOfYear();
 
         // Group income by month (January–December)
-        $incomeByMonth = Transaction::selectRaw('MONTH(created_at) as month, SUM(amount) as total')
+        $incomeByMonth = Transaction::selectRaw('EXTRACT(MONTH FROM created_at) as month, SUM(amount) as total')
             ->whereBetween('created_at', [$startOfYear, $endOfYear])
-            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->groupBy(DB::raw('EXTRACT(MONTH FROM created_at)'))
             ->orderBy('month')
             ->pluck('total', 'month');
 

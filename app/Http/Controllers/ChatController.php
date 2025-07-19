@@ -27,6 +27,7 @@ class ChatController extends Controller
     public function history()
     {
         $messages = ChatMessage::where('session_id', session()->getId())
+            ->orWhere('sessio_id', 'admin')
             ->orderBy('created_at')
             ->get();
 
