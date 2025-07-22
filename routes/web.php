@@ -1,9 +1,11 @@
 <?php
 
 use App\Filament\Pages\ChatConversation;
+use App\Http\Controllers\BrochureController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TransactionController;
 use App\Mail\ContactThankYouMail;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -55,6 +57,11 @@ Route::post('/subscribe', function (Request $request) {
             ->subject('Subscription Confirmation - Y Max University');
     });
 });
+Route::get('/courses/{course}/brochure', [BrochureController::class, 'download'])->name('courses.brochure');
+Route::get('/courses/{course}/purchase', [TransactionController::class, 'create'])
+    ->name('transactions.create');
+Route::post('/transactions', [TransactionController::class, 'store'])
+    ->name('transactions.store');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -72,5 +79,5 @@ Route::get('/admin/chat-conversation/{messageId}', ChatConversation::class)
         'auth', // or 'filament.auth' if using a custom guard
         config('filament.middleware.base'),
     ]);
-    
+
 require __DIR__ . '/auth.php';

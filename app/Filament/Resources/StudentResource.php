@@ -10,7 +10,9 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class StudentResource extends Resource
@@ -22,6 +24,15 @@ class StudentResource extends Resource
     protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
+
+    public static function getGlobalSearchResultTitle(Model $record): string | Htmlable
+    {
+        return $record->name;
+    }
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'email', 'phone_number'];
+    }
 
     public static function form(Form $form): Form
     {

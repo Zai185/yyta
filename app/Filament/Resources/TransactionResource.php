@@ -75,7 +75,7 @@ class TransactionResource extends Resource
             ->columns([
                 TextColumn::make('student.name')->label('Student')->sortable()->searchable(),
                 TextColumn::make('course.name')->label('Course')->sortable()->searchable(),
-                TextColumn::make('amount')->money('$', true),
+                TextColumn::make('amount'),
                 TextColumn::make('payment_method')->label('Payment Method')->sortable(),
                 TextColumn::make('status')->badge(),
                 TextColumn::make('updatedBy.name')->label('Updated By'),
@@ -85,7 +85,7 @@ class TransactionResource extends Resource
                 Tables\Filters\SelectFilter::make('status')
                     ->options([
                         'pending' => 'Pending',
-                        'completed' => 'Completed',
+                        'paid' => 'Completed',
                         'failed' => 'Failed',
                     ]),
             ]);

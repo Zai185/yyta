@@ -1,6 +1,6 @@
 <template>
 
-    <Head :title="navs.find(nav => route().current().startsWith(nav.prefix)).label"></Head>
+    <Head :title="navs.find(nav => route().current().startsWith(nav.prefix))?.label"></Head>
     <nav class="bg-white shadow-md fixed w-full z-50 h-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">

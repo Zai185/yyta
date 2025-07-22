@@ -18,9 +18,9 @@ class Student extends Model
         'batch_id'
     ];
 
-    public function batches()
+    public function batch()
     {
-        return $this->belongsToMany(Batch::class);
+        return $this->belongsTo(Batch::class);
     }
 
 

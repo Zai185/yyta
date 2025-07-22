@@ -13,7 +13,8 @@
 
             <!-- Hero Section with Background Image -->
             <div class="relative w-full rounded-xl overflow-hidden h-[350px] mb-12">
-                <img :src="course.img_url ? course.img_url : 'https://shengdongzhao.com/assets/blog/placeholder-image.jpeg'" alt="Course Image" class="absolute inset-0 w-full h-full object-cover">
+                <img :src="course.img_url ? course.img_url : 'https://shengdongzhao.com/assets/blog/placeholder-image.jpeg'"
+                    alt="Course Image" class="absolute inset-0 w-full h-full object-cover">
                 <div class="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30"></div>
 
                 <div
@@ -90,19 +91,17 @@
                         </div>
 
                         <div class="space-y-4">
-                            <button @click="downloadPDF"
-                                class="w-full bg-gray-100 text-gray-800 py-3 px-4 rounded-lg font-medium hover:bg-gray-200 transition-colors flex items-center justify-center">
-                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                                </svg>
-                                Download PDF Brochure
+                            <button @click="downloadPDF(course.id)"
+                                class="w-full bg-red-800 text-white py-3 px-4 rounded-lg font-medium hover:bg-red-900 transition-colors">
+                                Download Brochure
                             </button>
 
-                            <button v-if="course.is_online" @click="$emit('navigate', 'payment')"
-                                class="w-full bg-red-800 text-white py-3 px-4 rounded-lg font-medium hover:bg-red-900 transition-colors">
+                            <Link :href="route('transactions.create', {course: course.id})" v-if="course.is_online">
+                            <button
+                                class="w-full mt-4 bg-red-800 text-white py-3 px-4 rounded-lg font-medium hover:bg-red-900 transition-colors">
                                 Purchase Course
                             </button>
+                            </Link>
 
                             <button v-else @click="$emit('navigate', 'contact')"
                                 class="w-full bg-red-800 text-white py-3 px-4 rounded-lg font-medium hover:bg-red-900 transition-colors">
@@ -124,7 +123,29 @@ import { Link } from '@inertiajs/vue3';
 defineProps<{ course: Course }>()
 defineEmits(['navigate'])
 
-const downloadPDF = () => {
-    alert('PDF brochure download started!')
-}
+const downloadPDF = async (courseId: number) => {
+    try {
+        const response = await fetch(route('courses.brochure', { course: courseId }), {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/pdf',
+            },
+        });
+
+        if (!response.ok) throw new Error('Failed to download PDF');
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'brochure.pdf';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+    } catch (error) {
+        console.error(error);
+        alert('Error downloading brochure');
+    }
+};
+
 </script>
