@@ -123,35 +123,35 @@ class DatabaseSeeder extends Seeder
         }
 
         // Exams (each batch has 3-5 exams between 2022-2025)
-        // $exams = collect();
-        // foreach ($batches as $batch) {
-        //     $numExams = $faker->numberBetween(3, 5);
-        //     for ($i = 0; $i < $numExams; $i++) {
-        //         $startDate = $faker->dateTimeBetween("{$batch->name}", '2025-12-31');
-        //         $exams->push(Exam::create([
-        //             'start_date' => $startDate->format('Ymd'),
-        //             'start_at' => $startDate,
-        //             'module_id' => Module::inRandomOrder()->first()->id,
-        //             'end_at' => Carbon::parse($startDate)->addHours($faker->numberBetween(2, 5)),
-        //             'batch_id' => $batch->id,
-        //         ]));
-        //     }
-        // }
+        $exams = collect();
+        foreach ($batches as $batch) {
+            $numExams = $faker->numberBetween(3, 5);
+            for ($i = 0; $i < $numExams; $i++) {
+                $startDate = $faker->dateTimeBetween("{$batch->name}", '2025-12-31');
+                $exams->push(Exam::create([
+                    'start_date' => $startDate->format('Ymd'),
+                    'start_at' => $startDate,
+                    'module_id' => Module::inRandomOrder()->first()->id,
+                    'end_at' => Carbon::parse($startDate)->addHours($faker->numberBetween(2, 5)),
+                    'batch_id' => $batch->id,
+                ]));
+            }
+        }
 
         // Exam Results (for each exam, assign random students of batch with random scores)
-        // foreach ($exams as $exam) {
-        //     $batchStudents = $students->where('batch_id', $exam->batch_id);
-        //     $numResults = $faker->numberBetween(30, $batchStudents->count());
-        //     $examStudents = $batchStudents->random($numResults);
+        foreach ($exams as $exam) {
+            $batchStudents = $students->where('batch_id', $exam->batch_id);
+            $numResults = $faker->numberBetween(30, $batchStudents->count());
+            $examStudents = $batchStudents->random($numResults);
 
-        //     foreach ($examStudents as $student) {
-        //         ExamResult::create([
-        //             'exam_id' => $exam->id,
-        //             'student_id' => $student->id,
-        //             'score' => $faker->numberBetween(30, 100),
-        //         ]);
-        //     }
-        // }
+            foreach ($examStudents as $student) {
+                ExamResult::create([
+                    'exam_id' => $exam->id,
+                    'student_id' => $student->id,
+                    'score' => $faker->numberBetween(30, 100),
+                ]);
+            }
+        }
 
         // Transactions - variable payments per student (1-4 payments), random status and amounts
         foreach ($students as $student) {

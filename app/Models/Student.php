@@ -22,8 +22,10 @@ class Student extends Model
     {
         return $this->belongsTo(Batch::class);
     }
-
-
+    public function batches()
+    {
+        return $this->belongsTo(Batch::class);
+    }
     public function examResults()
     {
         return $this->hasMany(ExamResult::class);
