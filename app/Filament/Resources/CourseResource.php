@@ -51,8 +51,8 @@ class CourseResource extends Resource
                     Forms\Components\FileUpload::make('img_url')
                         ->label('Course Image')
                         ->disk('public')
-                        ->directory('courses')
                         ->image()
+                        ->directory('courses')
                         ->required(),
                 ]),
 

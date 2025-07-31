@@ -76,7 +76,7 @@ class TimetableResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('title')->searchable()->sortable(),
+                TextColumn::make('name')->searchable()->sortable(),
                 TextColumn::make('slots_count')
                     ->label('Slot Count')
                     ->counts('slots'),
