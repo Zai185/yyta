@@ -49,7 +49,6 @@ class TransactionController extends Controller
                 ]);
             }
             $course = Course::find($validated['course_id']);
-            dd($course);
             $transaction = Transaction::create([
                 'student_id' => $student->id,
                 'course_id' => $validated['course_id'],

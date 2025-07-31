@@ -34,6 +34,9 @@ class TimetableResource extends Resource
             TextInput::make('name')
                 ->required()
                 ->label('Timetable Name'),
+            Select::make('batch_id')
+                ->relationship('batch', 'name')
+                ->preload(),
 
             DatePicker::make('start_date')
                 ->required()
@@ -46,6 +49,7 @@ class TimetableResource extends Resource
             Repeater::make('slots')
                 ->relationship('slots')
                 ->label('Time Slots')
+                ->columns(2)
                 ->schema([
                     Select::make('day_of_week')
                         ->options([

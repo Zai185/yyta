@@ -47,7 +47,7 @@ class AttendanceResource extends Resource
                         Batch::pluck('name', 'id')->toArray()
                     )
                     ->query(function ($query, $state) {
-                        $query->whereHas('student.batches', function ($q) use ($state) {
+                        $query->whereHas('student.batch', function ($q) use ($state) {
                             $q->where('batch_id', $state);
                         });
                     }),

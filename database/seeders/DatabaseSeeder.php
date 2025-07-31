@@ -27,11 +27,11 @@ class DatabaseSeeder extends Seeder
     {
         $faker = Faker::create();
 
-        // Departments
+        # Departments
         $departments = collect(['Computer Science', 'Mathematics', 'Physics', 'Business'])
             ->map(fn($name) => Department::create(['name' => $name]));
 
-        // Courses (with fee and is_online)
+        # Courses
         $courses = collect(range(1, 6))
             ->map(fn($i) => Course::create([
                 'name' => "Course $i",
@@ -41,23 +41,7 @@ class DatabaseSeeder extends Seeder
                 'is_online' => $faker->boolean(30),
             ]));
 
-        // Batches (4 years, 2022-2025)
-        $batches = collect(range(2022, 2025))
-            ->map(fn($year) => Batch::create(['name' => "Batch $year"]));
-
-        // Lecturers (random per department)
-        $lecturers = collect(range(1, 12))
-            ->map(fn() => Lecturer::create([
-                'name' => $faker->name,
-                'email' => $faker->unique()->safeEmail,
-                'address' => $faker->address,
-                'phone_number' => $faker->phoneNumber,
-                'position' => $faker->randomElement(['Professor', 'Assistant Professor', 'Lecturer']),
-                'department_id' => $departments->random()->id,
-                'salary' => $faker->numberBetween(3000, 9000),
-            ]));
-
-        // Modules (each course has random 3-6 modules)
+        # Modules (each course has random 3-6 modules)
         $modules = collect();
         foreach ($courses as $course) {
             $numModules = $faker->numberBetween(3, 6);
@@ -70,7 +54,23 @@ class DatabaseSeeder extends Seeder
             }
         }
 
-        // Assign lecturers randomly to modules (module_lecturers)
+        # Batches (4 years, 2022-2025)
+        $batches = collect(range(2022, 2025))
+            ->map(fn($year) => Batch::create(['name' => "Batch $year"]));
+
+        # Lecturers (random per department)
+        $lecturers = collect(range(1, 12))
+            ->map(fn() => Lecturer::create([
+                'name' => $faker->name,
+                'email' => $faker->unique()->safeEmail,
+                'address' => $faker->address,
+                'phone_number' => $faker->phoneNumber,
+                'position' => $faker->randomElement(['Professor', 'Assistant Professor', 'Lecturer']),
+                'department_id' => $departments->random()->id,
+                'salary' => $faker->numberBetween(3000, 9000),
+            ]));
+
+        # Assign lecturers randomly to modules (module_lecturers)
         foreach ($modules as $module) {
             // assign 1-3 lecturers per module
             $numLecturers = $faker->numberBetween(1, 3);
@@ -123,35 +123,35 @@ class DatabaseSeeder extends Seeder
         }
 
         // Exams (each batch has 3-5 exams between 2022-2025)
-        // $exams = collect();
-        // foreach ($batches as $batch) {
-        //     $numExams = $faker->numberBetween(3, 5);
-        //     for ($i = 0; $i < $numExams; $i++) {
-        //         $startDate = $faker->dateTimeBetween("{$batch->name}", '2025-12-31');
-        //         $exams->push(Exam::create([
-        //             'start_date' => $startDate->format('Ymd'),
-        //             'start_at' => $startDate,
-        //             'module_id' => Module::inRandomOrder()->first()->id,
-        //             'end_at' => Carbon::parse($startDate)->addHours($faker->numberBetween(2, 5)),
-        //             'batch_id' => $batch->id,
-        //         ]));
-        //     }
-        // }
+        $exams = collect();
+        foreach ($batches as $batch) {
+            $numExams = $faker->numberBetween(3, 5);
+            for ($i = 0; $i < $numExams; $i++) {
+                $startDate = $faker->dateTimeBetween("{$batch->name}", '2025-12-31');
+                $exams->push(Exam::create([
+                    'start_date' => $startDate->format('Ymd'),
+                    'start_at' => $startDate,
+                    'module_id' => Module::inRandomOrder()->first()->id,
+                    'end_at' => Carbon::parse($startDate)->addHours($faker->numberBetween(2, 5)),
+                    'batch_id' => $batch->id,
+                ]));
+            }
+        }
 
         // Exam Results (for each exam, assign random students of batch with random scores)
-        // foreach ($exams as $exam) {
-        //     $batchStudents = $students->where('batch_id', $exam->batch_id);
-        //     $numResults = $faker->numberBetween(30, $batchStudents->count());
-        //     $examStudents = $batchStudents->random($numResults);
+        foreach ($exams as $exam) {
+            $batchStudents = $students->where('batch_id', $exam->batch_id);
+            $numResults = $faker->numberBetween(30, $batchStudents->count());
+            $examStudents = $batchStudents->random($numResults);
 
-        //     foreach ($examStudents as $student) {
-        //         ExamResult::create([
-        //             'exam_id' => $exam->id,
-        //             'student_id' => $student->id,
-        //             'score' => $faker->numberBetween(30, 100),
-        //         ]);
-        //     }
-        // }
+            foreach ($examStudents as $student) {
+                ExamResult::create([
+                    'exam_id' => $exam->id,
+                    'student_id' => $student->id,
+                    'score' => $faker->numberBetween(30, 100),
+                ]);
+            }
+        }
 
         // Transactions - variable payments per student (1-4 payments), random status and amounts
         foreach ($students as $student) {
@@ -183,15 +183,15 @@ class DatabaseSeeder extends Seeder
             ]);
         }
 
-        for ($i = 0; $i < 5; $i++) {
-            User::create([
-                'name' => $faker->name,
-                'email' => $faker->unique()->safeEmail,
-                'password' => bcrypt('password'),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
+        // for ($i = 0; $i < 5; $i++) {
+        //     User::create([
+        //         'name' => $faker->name,
+        //         'email' => $faker->unique()->safeEmail,
+        //         'password' => bcrypt('password'),
+        //         'created_at' => now(),
+        //         'updated_at' => now(),
+        //     ]);
+        // }
 
         // Staff (linked to departments, 5-8 entries)
         for ($i = 0; $i < $faker->numberBetween(5, 8); $i++) {

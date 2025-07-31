@@ -16,6 +16,7 @@ class Timetable extends Model
         'start_date',
         'end_date',
         'module_id',
+        'batch_id',
     ];
 
     protected $dates = [
@@ -28,6 +29,11 @@ class Timetable extends Model
     public function slots()
     {
         return $this->hasMany(TimetableSlot::class);
+    }
+
+    public function batch()
+    {
+        return $this->belongsTo(Batch::class);
     }
 
     public function module()

@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Transaction Created</title>
 </head>
+
 <body>
     <h1>Hello {{ $student->name }},</h1>
     <p>Thank you for your transaction.</p>
@@ -14,11 +16,12 @@
         <li>Status: {{ ucfirst($transaction->status) }}</li>
     </ul>
 
-    @if($transaction->payment_method === 'bank_transfer')
+    @if ($transaction->payment_method === 'bank_transfer')
         <p>Please transfer the amount to the following bank account:</p>
         <p><strong>Account Number:</strong> {{ $bankAccountNumber }}</p>
     @endif
 
     <p>If you have any questions, please contact us.</p>
 </body>
+
 </html>
