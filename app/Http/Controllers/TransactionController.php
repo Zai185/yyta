@@ -64,8 +64,7 @@ class TransactionController extends Controller
             // Send email
             Mail::to($student->email)->send(new TransactionCreated(
                 $student,
-                $transaction,
-                $transaction->payment_method === 'bank_transfer' ? $bankAccountNumber : null
+                $transaction
             ));
 
             return to_route('courses');

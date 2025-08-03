@@ -28,6 +28,9 @@ class BatchResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->label('Batch Name'),
+                Select::make('course_id')
+                    ->relationship('course', 'name')
+                    ->preload(),
                 Select::make('students')
                     ->multiple()
                     ->relationship('students', 'name')
@@ -43,6 +46,7 @@ class BatchResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('id')->sortable(),
                 Tables\Columns\TextColumn::make('name')->sortable(),
+                Tables\Columns\TextColumn::make('course.name')->sortable(),
             ])
             ->filters([
                 //

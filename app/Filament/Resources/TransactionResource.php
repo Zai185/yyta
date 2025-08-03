@@ -47,8 +47,8 @@ class TransactionResource extends Resource
             Select::make('payment_method')
                 ->options([
                     'cash' => 'Cash',
+                    'credit_card' => 'Credit Card',
                     'bank_transfer' => 'Bank Transfer',
-                    'paypal' => 'PayPal',
                     'other' => 'Other',
                 ])
                 ->required(),
@@ -79,8 +79,9 @@ class TransactionResource extends Resource
                 TextColumn::make('payment_method')->label('Payment Method')->sortable(),
                 TextColumn::make('status')->badge(),
                 TextColumn::make('updatedBy.name')->label('Updated By'),
-                TextColumn::make('updated_at')->dateTime('Y-m-d H:i')->sortable(),
+                TextColumn::make('created_at')->dateTime('Y-m-d H:i')->sortable(),
             ])
+            ->defaultSort('created_at', 'desc')
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->options([

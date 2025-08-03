@@ -3,9 +3,12 @@
 namespace App\Filament\Resources\TransactionResource\Pages;
 
 use App\Filament\Resources\TransactionResource;
+use App\Mail\TransactionCreated;
+use Exception;
 use Filament\Actions;
 use Filament\Forms\Form;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Support\Facades\Mail;
 
 class EditTransaction extends EditRecord
 {
@@ -18,15 +21,24 @@ class EditTransaction extends EditRecord
         ];
     }
 
-    public static function afterSave(Form $form): void
+    protected function afterSave(): void
     {
-        $transaction = $form->getRecord();
+        try {
 
-        if (
-            $transaction->status === 'completed' &&
-            $transaction->student->status === 'inactive'
-        ) {
-            $transaction->student->update(['status' => 'active']);
+            $transaction = $this->record;
+
+            if (
+                $transaction->status === 'completed' &&
+                $transaction->student->status === 'inactive'
+            ) {
+                $transaction->student->update(['status' => 'active']);
+            }
+            Mail::to($transaction->student->email)->send(new TransactionCreated(
+                $transaction->student,
+                $transaction
+            ));
+        } catch (Exception $e) {
+            logger()->error($e->getMessage());
         }
     }
 }

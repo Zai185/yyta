@@ -19,6 +19,8 @@ use App\Models\BatchLecturer;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Staff;
+use App\Models\Timetable;
+use App\Models\TimetableSlot;
 use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
@@ -69,6 +71,7 @@ class DatabaseSeeder extends Seeder
                 'department_id' => $departments->random()->id,
                 'salary' => $faker->numberBetween(3000, 9000),
             ]));
+       
 
         # Assign lecturers randomly to modules (module_lecturers)
         foreach ($modules as $module) {
@@ -170,6 +173,8 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
+
+        (new TimetableSlotSeeder())->run();
 
         // Users (Admin + some staff users)
         if (!User::where('email', 'admin@example.com')->exists()) {

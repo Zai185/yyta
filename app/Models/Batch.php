@@ -9,10 +9,15 @@ class Batch extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'course_id'];
 
     public function students()
     {
         return $this->belongsToMany(Student::class);
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
     }
 }

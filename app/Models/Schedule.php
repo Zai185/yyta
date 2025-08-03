@@ -27,6 +27,11 @@ class Schedule extends Model
         return $this->belongsTo(Module::class); // Make sure you have a Module model
     }
 
+    public function timetable_slot()
+    {
+        return $this->belongsTo(TimetableSlot::class);
+    }
+
     protected static function booted()
     {
         try {

@@ -24,6 +24,11 @@ class Course extends Model
         return $value ? Storage::disk('public')->url($value) : null;
     }
 
+    public function batches()
+    {
+        return $this->hasMany(Batch::class);
+    }
+
     public function modules()
     {
         return $this->hasMany(Module::class);

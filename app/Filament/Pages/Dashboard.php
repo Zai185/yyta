@@ -15,10 +15,8 @@ use App\Filament\Widgets\RegistrationDropoutTrend;
 use App\Filament\Widgets\StudentAverageScoreTable;
 use App\Filament\Widgets\TotalIncomeTrend;
 use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Dashboard\Concerns\HasFiltersForm;
-use Filament\Widgets\Concerns\InteractsWithPageFilters;
 
 class Dashboard extends \Filament\Pages\Dashboard
 {
